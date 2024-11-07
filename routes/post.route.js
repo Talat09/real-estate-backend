@@ -1,9 +1,9 @@
 import express from "express";
 const router = express.Router();
 router.get("/test", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hi from test Routes!");
 });
-router.post("/test", (req, res) => {
+router.post("/", (req, res) => {
   res.send("Hello World!");
 });
 router.put("/test", (req, res) => {
