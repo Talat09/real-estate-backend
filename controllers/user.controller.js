@@ -1,5 +1,5 @@
 import prisma from "../lib/prisma.js";
-
+import bcrypt from "bcrypt";
 //user.controller.js
 export const getUsers = async (req, res) => {
   try {
@@ -23,10 +23,37 @@ export const getUser = async (req, res) => {
     res.status(500).json({ message: "Failed to get users" });
   }
 };
-export const updateUser = (req, res) => {
+export const updateUser = async (req, res) => {
+  const id = req.params.id;
+  const tokenUserId = req.userId;
+  const { password, ...inputs } = req.body;
+  // Logging to inspect the inputs and tokenUserId
+  console.log("User ID:", id);
+  console.log("Token User ID:", tokenUserId);
+  console.log("Inputs:", inputs);
+  if (id !== tokenUserId) {
+    return res.status(403).json({ message: "Not Authorized" });
+  }
+  let updatedPassword = null;
+
   try {
-    res.send("Updated Single User");
+    if (password) {
+      updatedPassword = await bcrypt.hash(password, 10);
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        ...inputs,
+        ...(updatedPassword && { password: updatedPassword }),
+      },
+    });
+
+    res.status(200).json(updatedUser);
   } catch (error) {
+    console.error("Error updating user:", error);
     res.status(500).json({ message: "Failed to Update user" });
   }
 };
