@@ -26,14 +26,16 @@ export const getUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   const id = req.params.id;
   const tokenUserId = req.userId;
-  const { password, ...inputs } = req.body;
+  const { password, avatar, ...inputs } = req.body;
   // Logging to inspect the inputs and tokenUserId
   console.log("User ID:", id);
   console.log("Token User ID:", tokenUserId);
   console.log("Inputs:", inputs);
+
   if (id !== tokenUserId) {
     return res.status(403).json({ message: "Not Authorized" });
   }
+
   let updatedPassword = null;
 
   try {
@@ -48,6 +50,7 @@ export const updateUser = async (req, res) => {
       data: {
         ...inputs,
         ...(updatedPassword && { password: updatedPassword }),
+        ...(avatar && { avatar }),
       },
     });
 
@@ -57,10 +60,20 @@ export const updateUser = async (req, res) => {
     res.status(500).json({ message: "Failed to Update user" });
   }
 };
-export const deleteUser = (req, res) => {
+export const deleteUser = async (req, res) => {
+  const id = req.params.id;
+  const tokenUserId = req.userId;
+  if (id !== tokenUserId) {
+    return res.status(403).json({ message: "Not Authorized" });
+  }
   try {
-    res.send("Delete Single User");
+    await prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+    res.status(200).json({ message: "User Deleted Successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Failed to Delete user" });
+    res.status(500).json({ message: "Failed to Delete users" });
   }
 };
