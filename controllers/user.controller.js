@@ -28,9 +28,9 @@ export const updateUser = async (req, res) => {
   const tokenUserId = req.userId;
   const { password, avatar, ...inputs } = req.body;
   // Logging to inspect the inputs and tokenUserId
-  console.log("User ID:", id);
-  console.log("Token User ID:", tokenUserId);
-  console.log("Inputs:", inputs);
+  // console.log("User ID:", id);
+  // console.log("Token User ID:", tokenUserId);
+  // console.log("Inputs:", inputs);
 
   if (id !== tokenUserId) {
     return res.status(403).json({ message: "Not Authorized" });
@@ -53,8 +53,8 @@ export const updateUser = async (req, res) => {
         ...(avatar && { avatar }),
       },
     });
-
-    res.status(200).json(updatedUser);
+    const { password: userPassword, ...rest } = updatedUser;
+    res.status(200).json(rest);
   } catch (error) {
     console.error("Error updating user:", error);
     res.status(500).json({ message: "Failed to Update user" });
@@ -72,6 +72,7 @@ export const deleteUser = async (req, res) => {
         id,
       },
     });
+
     res.status(200).json({ message: "User Deleted Successfully" });
   } catch (error) {
     res.status(500).json({ message: "Failed to Delete users" });

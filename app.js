@@ -45,6 +45,9 @@ app.use("/api/V1/posts", postRoute);
 app.use("/api/V1/auth", authRoute);
 app.use("/api/V1/test", testRoute);
 app.use("/api/V1/users", usersRoute);
+app.get("/", (req, res) => {
+  res.send("Hello World! from real estate backend.");
+});
 app.listen(port, () => {
   console.log("Server listening on Port: ", port);
 });
