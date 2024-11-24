@@ -9,7 +9,7 @@ export const getPosts = async (req, res) => {
         city: query.city || undefined,
         type: query.type || undefined,
         property: query.property || undefined,
-        property: query.property || undefined,
+
         bedroom: parseInt(query.bedroom) || undefined,
         price: {
           gte: parseInt(query.minPrice) || 0,
@@ -43,7 +43,28 @@ export const getPost = async (req, res) => {
         },
       },
     });
-    res.status(200).json(post);
+    let userId;
+    const token = req.cookie.token;
+    if (!token) {
+      userId = null;
+    } else {
+      jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, payload) => {
+        if (err) {
+          userId = null;
+        } else {
+          userId = payload.id;
+        }
+      });
+    }
+    const saved = await prisma.savedPost.findUnique({
+      where: {
+        userId_postId: {
+          postId: id,
+          userId,
+        },
+      },
+    });
+    res.status(200).json({ ...post, isSaved: saved ? true : false });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Failed to get post" });
@@ -68,7 +89,7 @@ export const addPost = async (req, res) => {
     res.status(500).json({ message: "Failed to create post" });
   }
 };
-
+//still not added
 export const updatePost = async (req, res) => {
   const id = req.params.id;
   const tokenUserId = req.userId;

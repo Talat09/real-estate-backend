@@ -22,7 +22,7 @@ export const register = async (req, res) => {
 
     // console.log(newUser);
 
-    res.status(201).json({ message: "User created successfully" });
+    res.status(201).json({ message: "User created successfully", newUser });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Failed to create user!" });
@@ -50,7 +50,7 @@ export const login = async (req, res) => {
     // GENERATE COOKIE TOKEN AND SEND TO THE USER
 
     // res.setHeader("Set-Cookie", "test=" + "myValue").json("success")
-    const age = 1000 * 60 * 60 * 24 * 7;
+    const age = 1000 * 60 * 60 * 24 * 7; // 7 days expires time calculation for token
 
     const token = jwt.sign(
       {
