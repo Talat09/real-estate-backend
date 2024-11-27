@@ -10,9 +10,20 @@ import usersRoute from "./routes/user.route.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://frolicking-halva-9e0a62.netlify.app",
+];
+
 const corsOptions = {
-  origin: "http://localhost:5173", // Replace with your frontend URL
-  credentials: true, // Allow credentials (cookies)
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true); // Allow access
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true, // Enable cookies
 };
 //for swagger
 // Set up Swagger UI

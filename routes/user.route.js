@@ -106,5 +106,5 @@ router.put("/:id", verifyToken, updateUser);
  *         description: User deleted successfully
  */
 router.delete("/:id", verifyToken, deleteUser);
-router.post("/save",  savePost);
+router.post("/save",verifyToken,  savePost);
 export default router;
