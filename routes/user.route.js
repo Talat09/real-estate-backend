@@ -5,6 +5,7 @@ import {
   getUsers,
   updateUser,
   savePost,
+  profilePosts,
 } from "../controllers/user.controller.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 
@@ -56,7 +57,7 @@ router.get("/", getUsers);
  *             schema:
  *               type: object
  */
-router.get("/:id", verifyToken, getUser);
+// router.get("/:id", verifyToken, getUser);
 
 /**
  * @swagger
@@ -106,5 +107,6 @@ router.put("/:id", verifyToken, updateUser);
  *         description: User deleted successfully
  */
 router.delete("/:id", verifyToken, deleteUser);
-router.post("/save",verifyToken,  savePost);
+router.post("/save", verifyToken, savePost);
+router.get("/profilePosts", verifyToken, profilePosts);
 export default router;
