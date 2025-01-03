@@ -7,6 +7,8 @@ import postRoute from "./routes/post.route.js";
 import authRoute from "./routes/auth.route.js";
 import testRoute from "./routes/test.route.js";
 import usersRoute from "./routes/user.route.js";
+import chatRoute from "./routes/chat.route.js";
+import messageRoute from "./routes/message.route.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -56,6 +58,8 @@ app.use("/api/V1/posts", postRoute);
 app.use("/api/V1/auth", authRoute);
 app.use("/api/V1/test", testRoute);
 app.use("/api/V1/users", usersRoute);
+app.use("/api/V1/chats", chatRoute);
+app.use("/api/V1/messages", messageRoute);
 app.get("/", (req, res) => {
   res.send("Hello World! from real estate backend.");
 });
