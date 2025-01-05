@@ -5,7 +5,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "build": "npx prisma generate && npm install && npm run build",
+    "postinstall": "prisma generate",
+    "build": "prisma generate && next build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
