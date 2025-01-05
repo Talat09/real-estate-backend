@@ -23,7 +23,11 @@ const server = createServer(app);
 // Configure Socket.IO
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Frontend URL
+    origin: [
+      "http://localhost:5173",
+      "https://frolicking-halva-9e0a62.netlify.app",
+      "https://t-properties.netlify.app",
+    ], // Frontend URL
     methods: ["GET", "POST"],
   },
 });
