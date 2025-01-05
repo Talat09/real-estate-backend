@@ -70,6 +70,7 @@ io.on("connection", (socket) => {
 const allowedOrigins = [
   "http://localhost:5173",
   "https://frolicking-halva-9e0a62.netlify.app",
+  "https://t-properties.netlify.app",
 ];
 
 const corsOptions = {
